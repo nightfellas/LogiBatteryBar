@@ -1,0 +1,8 @@
+import XCTest
+@testable import LogiBatteryBar
+
+final class SanityTests: XCTestCase {
+    func testSanity() {
+        XCTAssertEqual(1 + 1, 2)
+    }
+}
