@@ -19,6 +19,11 @@ BIN_PATH="$(swift build -c release --show-bin-path)/LogiBatteryBar"
 cp "$BIN_PATH" "$MACOS_DIR/$APP_NAME"
 chmod +x "$MACOS_DIR/$APP_NAME"
 
+if [ -f "Resources/AppIcon.icns" ]; then
+    echo "==> Copying AppIcon.icns..."
+    cp "Resources/AppIcon.icns" "$RESOURCES_DIR/AppIcon.icns"
+fi
+
 cat <<EOF > "$CONTENTS_DIR/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -26,6 +31,10 @@ cat <<EOF > "$CONTENTS_DIR/Info.plist"
 <dict>
     <key>CFBundleExecutable</key>
     <string>$APP_NAME</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>com.user.LogiBatteryBar</string>
     <key>CFBundleName</key>
