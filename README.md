@@ -62,9 +62,9 @@ Aplikasi resmi Logitech Options+ berukuran cukup besar, memakan memori, dan tida
 ### Langkah 1: Persiapan & Kompilasi (Build)
 
 1. Buka aplikasi **Terminal** di Mac Anda.
-2. Masuk ke direktori proyek:
+2. Masuk ke direktori proyek, contoh:
    ```bash
-   cd /Users/nightwalker/Documents/Projects/widget
+   cd LogiBatteryBar
    ```
 3. Jalankan skrip build otomatis:
    ```bash
