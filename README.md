@@ -25,9 +25,6 @@ The official Logitech Options+ software is resource-heavy, consumes significant 
 
 ![description](https://i.ibb.co.com/ksrbrJCx/Screenshot-2026-11-10-at-11-40-01.png)
 
-  ```
-  🖱️ 75%   ⌨️ 80%
-  ```
 - ⚡ **Charging Detection:**
   Automatically displays a lightning icon `⚡` when a mouse or keyboard is charging via USB-C cable.
 - 💤 **Smart Sleep / Idle Detection:**
