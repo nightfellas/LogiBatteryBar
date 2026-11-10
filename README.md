@@ -23,6 +23,8 @@ The official Logitech Options+ software is resource-heavy, consumes significant 
   
 ![description](https://i.ibb.co.com/4w3k4g5h/Screenshot-2026-11-10-at-11-39-50.png)
 
+![description](https://i.ibb.co.com/ksrbrJCx/Screenshot-2026-11-10-at-11-40-01.png)
+
   ```
   🖱️ 75%   ⌨️ 80%
   ```
