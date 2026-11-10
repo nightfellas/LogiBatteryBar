@@ -20,6 +20,8 @@ The official Logitech Options+ software is resource-heavy, consumes significant 
 
 - 🖱️ **Glanceable Menu Bar Indicator:**
   Always visible without interrupting your workflow:
+!([https://github.com](https://i.ibb.co.com/4w3k4g5h/Screenshot-2026-11-10-at-11-39-50.png))
+
   ```
   🖱️ 75%   ⌨️ 80%
   ```
