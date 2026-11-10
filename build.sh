@@ -36,7 +36,7 @@ cat <<EOF > "$CONTENTS_DIR/Info.plist"
     <key>CFBundleIconName</key>
     <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
-    <string>com.user.LogiBatteryBar</string>
+    <string>com.nightwalker.LogiBatteryBar</string>
     <key>CFBundleName</key>
     <string>$APP_NAME</string>
     <key>CFBundlePackageType</key>

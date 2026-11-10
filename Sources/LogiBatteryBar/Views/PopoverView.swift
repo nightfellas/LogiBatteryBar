@@ -75,21 +75,38 @@ public struct PopoverView: View {
 
             Divider()
 
-            // Footer
+            // Options & Status
             HStack {
+                Toggle(isOn: Binding(
+                    get: { viewModel.launchAtLogin },
+                    set: { viewModel.setLaunchAtLogin($0) }
+                )) {
+                    Text("Start at Login")
+                        .font(.system(size: 11))
+                }
+                .toggleStyle(.checkbox)
+
+                Spacer()
+
                 if let lastUpdated = viewModel.lastUpdated {
                     Text("Updated \(timeFormatted(lastUpdated))")
                         .font(.system(size: 10))
                         .foregroundColor(.secondary)
-                } else {
-                    Text("Logi Bolt USB Receiver")
-                        .font(.system(size: 10))
-                        .foregroundColor(.secondary)
                 }
+            }
+
+            Divider()
+
+            // Footer
+            HStack {
+                Text(viewModel.isReceiverConnected ? "Logi Bolt Active" : "Receiver Disconnected")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
 
                 Spacer()
 
                 Button("Quit") {
+                    AppDelegate.isUserQuitting = true
                     NSApplication.shared.terminate(nil)
                 }
                 .buttonStyle(.plain)

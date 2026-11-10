@@ -28,4 +28,10 @@ final class BatteryStatusViewModelTests: XCTestCase {
         vm.isReceiverConnected = false
         XCTAssertEqual(vm.menuBarTitle, "⚡ Logi (Off)")
     }
+
+    func testLaunchAtLoginProperty() {
+        let vm = BatteryStatusViewModel(autoStart: false)
+        let initial = vm.launchAtLogin
+        XCTAssertEqual(vm.launchAtLogin, initial)
+    }
 }

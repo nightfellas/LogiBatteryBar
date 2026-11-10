@@ -1,167 +1,175 @@
 # 🔋 LogiBatteryBar for macOS
 
 <p align="center">
-  <b>Widget Menu Bar Native macOS untuk Memantau Status Baterai Perangkat Logitech (MX Master 3S & MX Mechanical Mini) secara Real-Time via Logi Bolt USB Receiver.</b>
+  <b>A lightweight native macOS Menu Bar widget to monitor battery levels of Logitech devices (MX Master 3S & MX Mechanical Mini) in real time via the Logi Bolt USB Receiver.</b>
 </p>
 
 ---
 
-## 📌 Latar Belakang Masalah
+## 📌 Problem Background
 
-Di macOS (Ventura, Sonoma, Sequoia), widget baterai bawaan Apple hanya mendukung perangkat Bluetooth standar Apple (seperti AirPods, Magic Mouse, Magic Keyboard). Jika Anda menggunakan mouse dan keyboard Logitech yang tersambung melalui **Logi Bolt USB Receiver**, sistem macOS **tidak dapat membaca maupun menampilkan persentase baterai** perangkat tersebut di desktop maupun Control Center.
+On macOS (Ventura, Sonoma, Sequoia, and later), Apple's built-in battery widget only displays standard Bluetooth devices (such as AirPods, Magic Mouse, and Magic Keyboard). When connecting Logitech peripherals through a **Logi Bolt USB Receiver**, macOS **cannot read or display battery percentages** on the desktop or in Control Center.
 
-Aplikasi resmi Logitech Options+ berukuran cukup besar, memakan memori, dan tidak memiliki indikator persentase angka yang praktis dan selalu terlihat di Menu Bar.
+The official Logitech Options+ software is resource-heavy, consumes significant background memory, and lacks a compact, persistent percentage indicator directly in the Menu Bar.
 
-**LogiBatteryBar** hadir sebagai solusi: aplikasi native macOS yang sangat ringan (zero external dependencies) yang berkomunikasi langsung dengan firmware dongle Logi Bolt via protokol hardware **HID++ 2.0** untuk menampilkan baterai mouse dan keyboard Anda setiap saat di pojok atas layar.
+**LogiBatteryBar** solves this problem: a 100% native, ultra-lightweight macOS application (zero external frameworks or dependencies) communicating directly with the Logi Bolt receiver hardware via the **HID++ 2.0** protocol.
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Key Features
 
-- 🖱️ **Indikator Ringkas di Menu Bar:**
-  Selalu terlihat saat Anda bekerja tanpa mengganggu aplikasi lain:
+- 🖱️ **Glanceable Menu Bar Indicator:**
+  Always visible without interrupting your workflow:
   ```
   🖱️ 75%   ⌨️ 80%
   ```
-- ⚡ **Deteksi Pengisian Daya (Charging Status):**
-  Otomatis memunculkan ikon petir `⚡` saat mouse atau keyboard sedang diisi daya menggunakan kabel USB-C.
-- 💤 **Mode Hemat Daya Cerdas (Sleep / Idle Aware):**
-  Mendeteksi saat perangkat masuk ke mode tidur (*RF Sleep Mode*). Angka baterai terakhir tetap disimpan dan diberi label keterangan `(zZ)` / `Standby (Idle)`. Begitu tombol ditekan, status langsung kembali aktif.
+- ⚡ **Charging Detection:**
+  Automatically displays a lightning icon `⚡` when a mouse or keyboard is charging via USB-C cable.
+- 💤 **Smart Sleep / Idle Detection:**
+  Detects when peripherals enter RF deep sleep mode to conserve battery. The last known valid battery percentage is retained and marked with `(zZ)` / `Standby (Idle)`. The moment a key or button is pressed, the status instantly returns to active.
 - 🫧 **Native SwiftUI Popover Bubble Window:**
-  Panel popover modern bergaya gelembung native macOS (dengan panah segitiga rapi mengarah ke tombol menu bar) saat diklik, menampilkan:
-  - **Nama Perangkat Lengkap:** `MX Master 3S` dan `MX Mechanical Mini`.
-  - **Slot Dongle Logi Bolt:** Menampilkan nomor slot perangkat (`Slot 1 • Logi Bolt`, `Slot 5 • Logi Bolt`).
-  - **Pill Badge Baterai Dinamis:** Ikon baterai level adaptif dengan warna status (*Hijau > 30%*, *Oranye 15–30%*, *Merah < 15%*).
-  - **Progress Bar Baterai.**
-  - **Status Konektivitas & Daya:** `⚡ Charging via USB`, `✓ Connected`, atau `💤 Standby (Idle)`.
-  - **Waktu Pembaruan:** Jam terakhir telemetry terbaca (`Active • Updated 21:05`).
-- 🔄 **Quick Refresh (Dua Cara):**
-  - Klik tombol **Refresh** di dalam panel popover.
-  - Klik kanan langsung pada teks menu bar untuk memicu pembaruan latar belakang tanpa membuka jendela.
-- 🌿 **Sangat Hemat Baterai & Bebas Polling Berlebih:**
-  Melakukan pembaruan terjadwal setiap 60 detik, serta otomatis melakukan *instant refresh* saat Mac Anda baru dibangunkan dari mode tidur (*System Wake Notification*).
-- 🔒 **Akses Aman & Non-Eksklusif (`kIOHIDOptionsTypeNone`):**
-  Tidak mengunci dongle USB receiver, sehingga input mouse/keyboard dan software pendukung seperti Logi Options+ tetap berfungsi normal berdampingan.
+  Clicking the menu bar indicator opens a clean, modern macOS popover card showing:
+  - **Full Device Names:** e.g., `MX Master 3S` and `MX Mechanical Mini`.
+  - **Logi Bolt Slot Assignment:** Slot identification (`Slot 1 • Logi Bolt`, `Slot 5 • Logi Bolt`).
+  - **Dynamic Battery Badges:** Adaptive battery level icon and color coding (*Green > 30%*, *Orange 15–30%*, *Red < 15%*).
+  - **Visual Progress Bars.**
+  - **Power & Connection State:** `⚡ Charging via USB`, `✓ Connected`, or `💤 Standby (Idle)`.
+  - **Telemetry Timestamp:** Last updated time (`Updated 10:50:35`).
+- 🚀 **Built-in "Start at Login" Toggle:**
+  Enable or disable auto-start directly inside the popover UI with one click, utilizing modern macOS `ServiceManagement` (`SMAppService`).
+- 🔄 **Quick Refresh Options:**
+  - Click the **Refresh** button inside the popover window.
+  - Right-click the menu bar text to trigger a silent background poll.
+- 🌿 **Ultra-Low Battery & Resource Footprint:**
+  Scheduled background polling every 60 seconds with instant wake updates (`NSWorkspace.didWakeNotification`).
+- 🔒 **Safe Shared Access (`kIOHIDOptionsTypeNone`):**
+  Uses non-exclusive IOKit access, allowing input events and companion tools (like Logi Options+) to coexist smoothly without hardware contention.
+- 🎨 **macOS Retina App Icon:**
+  Includes a native high-resolution squircle application icon compatible with Finder, Launchpad, and System Settings.
 
 ---
 
-## 🖥️ Persyaratan Sistem
+## 🖥️ System Requirements
 
-| Komponen | Spesifikasi Minimum |
+| Component | Minimum Specification |
 | :--- | :--- |
-| **Sistem Operasi** | macOS 13.0 (Ventura), macOS 14.0 (Sonoma), macOS 15.0 (Sequoia), atau lebih baru |
-| **Arsitektur** | Apple Silicon (M1, M2, M3, M4) & Intel (`x86_64`) |
-| **Hardware** | Dongle **Logi Bolt USB Receiver** (Product ID `0xC548` / Vendor ID `0x046D`) |
-| **Perangkat Didukung** | Logitech MX Master 3S, MX Mechanical / Mini, MX Keys S, MX Anywhere 3S, dan perangkat Logitech Bolt lainnya |
-| **Tools Build** | Xcode Command Line Tools (`swift`, `clang`) bawaan macOS |
+| **Operating System** | macOS 13.0 (Ventura), macOS 14.0 (Sonoma), macOS 15.0 (Sequoia), macOS Tahoe, or later |
+| **Architecture** | Apple Silicon (M1, M2, M3, M4) & Intel (`x86_64`) / Hackintosh |
+| **Hardware** | **Logi Bolt USB Receiver** (Product ID `0xC548` / Vendor ID `0x046D`) |
+| **Supported Devices** | Logitech MX Master 3S, MX Mechanical / Mini, MX Keys S, MX Anywhere 3S, and all Bolt-compatible devices |
+| **Build Tools** | Xcode Command Line Tools (`swift`, `clang`) |
 
 ---
 
-## 🛠️ Panduan Build & Instalasi
+## 🛠️ Build & Installation Guide
 
-### Langkah 1: Persiapan & Kompilasi (Build)
+### Step 1: Compile the App Bundle
 
-1. Buka aplikasi **Terminal** di Mac Anda.
-2. Masuk ke direktori proyek, contoh:
+1. Open **Terminal** on your Mac.
+2. Navigate to the project directory:
    ```bash
-   cd LogiBatteryBar
+   cd /Users/nightwalker/Documents/Projects/widget
    ```
-3. Jalankan skrip build otomatis:
+3. Run the automated build script:
    ```bash
    ./build.sh
    ```
-   *Skrip ini akan mengompilasi kode Swift menggunakan optimasi rilis (`swift build -c release`), membuat bundle macOS `LogiBatteryBar.app`, menyetel konfigurasi latar belakang `LSUIElement`, dan menandatangani aplikasi secara ad-hoc.*
-4. Setelah selesai, berkas `LogiBatteryBar.app` siap pakai akan tercipta di direktori proyek.
+   *This compiles the Swift code with release optimization (`swift build -c release`), constructs the `LogiBatteryBar.app` bundle, sets up `AppIcon.icns`, configures `Info.plist`, and applies ad-hoc code signing.*
 
 ---
 
-### Langkah 2: Cara Menjalankan Aplikasi
+### Step 2: Install to `/Applications`
 
-Anda dapat langsung menjalankan aplikasi melalui Terminal:
-```bash
-open LogiBatteryBar.app
-```
-Atau buka folder proyek melalui **Finder** dan klik dua kali berkas **`LogiBatteryBar.app`**. Ikon status baterai mouse dan keyboard Anda akan langsung muncul di Menu Bar kanan atas layar macOS Anda!
-
----
-
-### Langkah 3: Memasang Permanen ke Folder `/Applications`
-
-Agar aplikasi tersimpan rapi bersama aplikasi macOS lainnya:
+To install the app alongside your system applications:
 ```bash
 cp -R LogiBatteryBar.app /Applications/
 ```
-Kini Anda bisa menemukan dan membuka `LogiBatteryBar` langsung dari Spotlight (`Cmd + Space`) atau Launchpad.
+
+Launch the application:
+```bash
+open /Applications/LogiBatteryBar.app
+```
+The battery indicators will appear immediately on the top-right Menu Bar.
 
 ---
 
-### Langkah 4: Menjadikan Auto-Start saat Mac Dinyalakan (Login Items)
+### Step 3: Enable "Start at Login"
 
-Agar Anda tidak perlu membuka aplikasi secara manual setiap kali me-restart Mac:
+You can enable auto-start when your Mac turns on in two ways:
 
-1. Buka menu **Apple ()** di pojok kiri atas layar, lalu pilih **System Settings...** (Pengaturan Sistem).
-2. Di bilah sisi kiri, pilih menu **General** (Umum).
-3. Pilih submenu **Login Items** (Item Masuk).
-4. Pada bagian atas bertuliskan **Open at Login** (Buka saat Masuk), klik tombol tambah **(+)**.
-5. Di jendela pemilihan file yang muncul, buka folder **Applications**, pilih **`LogiBatteryBar`**, lalu klik **Open**.
-6. **Selesai!** Kini setiap kali Mac dinyalakan atau login, status baterai perangkat Logitech Anda akan otomatis terpantau.
-
----
-
-## 🧭 Panduan Penggunaan Sehari-hari
-
-- **Melihat Status Cepat:** Cukup lirik menu bar di kanan atas. Contoh: `🖱️ 75%  ⌨️ 80%`.
-- **Melihat Detail & Status Pengisian Daya:** Klik kiri pada angka baterai di menu bar untuk membuka panel kartu detail.
-- **Refresh Manual Cepat:** Klik kanan pada angka baterai di menu bar untuk memaksa dongle membaca status terbaru tanpa membuka jendela.
-- **Keluar dari Aplikasi:** Klik kiri ikon di menu bar, lalu klik tombol **Quit** di pojok kanan bawah panel detail.
+1. **In-App (Recommended):**
+   - Click the battery indicator in the menu bar to open the popover card.
+   - Simply check the **"Start at Login"** checkbox.
+2. **Via macOS System Settings:**
+   - Go to **System Settings > General > Login Items**.
+   - Under **Open at Login**, ensure `LogiBatteryBar` is listed.
 
 ---
 
-## 🏗️ Struktur Arsitektur Kode
+## 🧭 Daily Usage Tips
+
+- **Quick Glance:** View percentages at a glance on the Menu Bar (e.g., `🖱️ 75%  ⌨️ 80%`).
+- **Detailed Card:** Click on the percentage text to open the details bubble.
+- **Fast Manual Refresh:** Right-click the menu bar text or click the **Refresh** button inside the card.
+- **Quit Application:** Click the **Quit** button at the bottom-right corner of the popover card.
+
+---
+
+## 🏗️ Architecture Overview
 
 ```
 widget/
-├── Package.swift                    # Konfigurasi Swift Package Manager (macOS 13+)
-├── build.sh                         # Skrip build & packaging bundle .app
-├── README.md                        # Dokumentasi dan panduan lengkap
+├── Package.swift                         # Swift Package Manager manifest (macOS 13+)
+├── build.sh                              # Release build, icon packaging & bundle script
+├── README.md                             # Comprehensive documentation (English)
+├── Resources/
+│   └── AppIcon.icns                      # Retina macOS app icon (16x16 to 1024x1024)
+├── scripts/
+│   └── generate_icon.swift               # CoreGraphics/AppKit iconset generator script
 ├── Sources/
 │   └── LogiBatteryBar/
 │       ├── App/
-│       │   └── LogiBatteryBarApp.swift   # Entry-point SwiftUI dengan MenuBarExtra .window
+│       │   └── LogiBatteryBarApp.swift   # SwiftUI @main entry point with MenuBarExtra (.window)
 │       ├── Models/
-│       │   └── LogiDevice.swift          # Struktur data perangkat, tipe, dan status daya
+│       │   └── LogiDevice.swift          # Device model, types, and battery/charging state
 │       ├── Services/
-│       │   ├── HIDPlusPlusProtocol.swift # Serializer & Parser protokol Logitech HID++ 2.0
-│       │   └── LogiBoltHIDService.swift  # IOKit HID Manager & manajemen komunikasi Bolt dongle
+│       │   ├── HIDPlusPlusProtocol.swift # Logitech HID++ 2.0 packet serializer & parser
+│       │   ├── LogiBoltHIDService.swift  # IOKit HIDManager Bolt dongle communication
+│       │   └── LaunchAtLoginService.swift# Modern ServiceManagement (SMAppService) auto-start
 │       ├── ViewModels/
-│       │   └── BatteryStatusViewModel.swift # Observable State, interval timer, & format judul
+│       │   └── BatteryStatusViewModel.swift # Observable State, periodic polling & formatters
 │       └── Views/
-│           ├── DeviceRowView.swift       # Kartu SwiftUI individual untuk tiap perangkat
-│           └── PopoverView.swift         # Panel popup popover container
+│           ├── DeviceRowView.swift       # Individual device card with SF Symbols & progress bar
+│           └── PopoverView.swift         # Popup bubble window container with settings
 └── Tests/
-    └── LogiBatteryBarTests/         # 13 automated unit tests berbasis XCTest
+    └── LogiBatteryBarTests/              # 14 automated unit tests (XCTest)
 ```
 
 ---
 
-## ❓ Troubleshooting & Tanya Jawab
+## ❓ Frequently Asked Questions (FAQ) & Troubleshooting
 
-#### 1. Mengapa muncul teks `⚡ Logi (Off)` di menu bar?
-Teks ini menandakan dongle Logi Bolt USB Receiver tidak terdeteksi terpasang pada port USB Mac Anda.
-- **Solusi:** Pastikan dongle USB Logi Bolt tercolok dengan kencang di port Mac atau di USB Hub yang aktif.
+#### 1. Why does the menu bar display `⚡ Logi (Off)`?
+This status indicates that the Logi Bolt USB Receiver dongle was not detected in any USB port.
+- **Solution:** Ensure the Logi Bolt USB receiver is plugged into an active USB port or powered USB hub.
 
-#### 2. Mengapa keyboard berstatus `Standby (Idle)` saat sedang tidak mengetik?
-Keyboard wireless Logitech (seperti MX Mechanical Mini) dirancang memiliki mode tidur (*RF Sleep*) sangat agresif untuk menghemat baterai jika tidak ada tombol yang ditekan selama beberapa saat.
-- **Solusi:** Ini adalah perilaku normal dan sehat. Aplikasi tetap menampilkan persentase baterai terakhir yang valid. Begitu Anda menekan satu tombol saja, statusnya akan langsung kembali menjadi `Connected`.
+#### 2. Why does the keyboard show `Standby (Idle)` when not typing?
+Wireless Logitech keyboards (such as the MX Mechanical Mini) feature an aggressive RF sleep timer to maximize battery life when keys are not pressed.
+- **Solution:** This is normal and expected behavior. The app retains the last known battery level. The moment any key is pressed, the status automatically switches back to `Connected`.
 
-#### 3. Apakah aplikasi ini bentrok dengan Logi Options+?
-Tidak sama sekali. LogiBatteryBar membuka koneksi IOKit dengan opsi *shared non-exclusive access* (`kIOHIDOptionsTypeNone`). Software resmi Logi Options+ tetap dapat digunakan secara bersamaan untuk mengatur konfigurasi tombol, DPI, dan *gesture*.
+#### 3. Does this app conflict with Logitech Options+?
+Not at all. `LogiBatteryBar` accesses the device using non-exclusive shared IOKit flags (`kIOHIDOptionsTypeNone`). Official software like Logi Options+ continues to work seamlessly alongside it for custom button mapping, gesture controls, and DPI adjustment.
 
-#### 4. Bagaimana cara meng-uninstall aplikasi?
-Hentikan aplikasi dengan menekan tombol **Quit** di panel popover (atau jalankan `pkill -f LogiBatteryBar` di Terminal), lalu hapus berkas `LogiBatteryBar.app` dari folder `/Applications`.
+#### 4. Is this app compatible with Hackintosh?
+Yes. The app runs completely in user space and utilizes Apple's standard `IOKit.hid` and `SwiftUI` APIs without requiring custom kexts, root privileges, or disabling SIP.
+
+#### 5. How do I uninstall the app?
+1. Uncheck "Start at Login" in the popover card (or remove it from **System Settings > General > Login Items**).
+2. Click **Quit** in the popover card.
+3. Delete `/Applications/LogiBatteryBar.app`.
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
-Proyek ini dirilis di bawah lisensi **MIT License** — bebas digunakan, dimodifikasi, dan didistribusikan.
+This project is licensed under the **MIT License** — free to use, modify, and distribute.

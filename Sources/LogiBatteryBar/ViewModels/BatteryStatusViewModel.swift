@@ -8,12 +8,14 @@ public final class BatteryStatusViewModel: ObservableObject {
     @Published public var isReceiverConnected: Bool = false
     @Published public var isRefreshing: Bool = false
     @Published public var lastUpdated: Date? = nil
+    @Published public var launchAtLogin: Bool = false
 
     private let hidService: LogiBoltHIDService
     private var timer: Timer?
 
     public init(hidService: LogiBoltHIDService, autoStart: Bool = true) {
         self.hidService = hidService
+        self.launchAtLogin = LaunchAtLoginService.isEnabled
 
         self.hidService.onDevicesUpdated = { [weak self] updatedDevices in
             guard let self = self else { return }
@@ -68,6 +70,15 @@ public final class BatteryStatusViewModel: ObservableObject {
     public func refresh() {
         isRefreshing = true
         hidService.refreshDevices()
+    }
+
+    public func setLaunchAtLogin(_ enabled: Bool) {
+        LaunchAtLoginService.setEnabled(enabled)
+        launchAtLogin = LaunchAtLoginService.isEnabled
+    }
+
+    public func toggleLaunchAtLogin() {
+        setLaunchAtLogin(!launchAtLogin)
     }
 
     public var menuBarTitle: String {

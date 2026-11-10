@@ -9,7 +9,7 @@
     <key>CFBundleIconName</key>
     <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
-    <string>com.user.LogiBatteryBar</string>
+    <string>com.nightwalker.LogiBatteryBar</string>
     <key>CFBundleName</key>
     <string>LogiBatteryBar</string>
     <key>CFBundlePackageType</key>
